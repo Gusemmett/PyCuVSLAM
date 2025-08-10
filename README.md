@@ -27,8 +27,8 @@ PyCuVSLAM is supported on the following OS and platforms, with the system requir
 
 | OS                                | Architecture | System Requirements                          | Supported Installation Method                   |
 |-----------------------------------|--------------|----------------------------------------------|-------------------------------------------------|
-| Ubuntu 22.04 (Desktop/Laptop)     | x86_64       | Python 3.10, Nvidia GPU with CUDA 12.6       | [Native][3], [Venv][4], [Conda][5], [Docker][6] |
-| Ubuntu 24.04 (Desktop/Laptop)     | x86_64       | Nvidia GPU with CUDA 12.6                    | [Conda][5], [Docker][6]                         |
+| Ubuntu 22.04 (Desktop/Laptop)     | x86_64       | Python 3.10, Nvidia GPU with CUDA 12.6       | [Native][3], [Venv][4], [Conda][5], [Docker][6], [Pixi][7] |
+| Ubuntu 24.04 (Desktop/Laptop)     | x86_64       | Nvidia GPU with CUDA 12.6                    | [Conda][5], [Docker][6], [Pixi][7]                         |
 | Ubuntu 22.04 ([Nvidia Jetson][1]) | aarch64      | [Jetpack 6.1/6.2][2], Python 3.10, CUDA 12.6 | [Native][3], [Venv][4], [Conda][5], [Docker][6] |
 
 [1]: https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/
@@ -37,6 +37,7 @@ PyCuVSLAM is supported on the following OS and platforms, with the system requir
 [4]: #option-2-using-venv
 [5]: #option-3-using-conda
 [6]: #option-4-using-docker
+[7]: #option-5-using-pixi
 
 
 ### CUDA Toolkit
@@ -132,6 +133,39 @@ PyCuVSLAM provides Docker support for both x86_64 and Jetson platforms with Real
 - Automatic pycuvslam package installation
 - USB device passthrough for camera access
 
+#### Option 5: Using Pixi
+
+**Important**: This option has been tested on Ubuntu 24.04 x86_64
+
+[Pixi](https://pixi.sh/) is a modern package management solution that automatically handles environment creation and dependency management.
+
+1. **Install Pixi** (if not already installed):
+   ```bash
+   curl -fsSL https://pixi.sh/install.sh | bash
+   ```
+
+2. **Create and activate the pixi environment:**
+   ```bash
+   pixi install
+   pixi shell
+   ```
+
+3. **Install cuVSLAM:**
+   ```bash
+   pixi run pip install -e bin/x86_64
+   ```
+   For Jetson, use the following command:
+   ```bash
+   pixi run pip install -e bin/aarch64
+   ```
+
+4. **Install example requirements:**
+   ```bash
+   pixi run pip install -r examples/requirements.txt
+   ```
+
+Pixi will automatically manage the Python environment, CUDA toolkit, and all dependencies specified in `pixi.toml`.
+
 ### PyCuVSLAM Installation
 
 1. Clone the PyCuVSLAM repository.
@@ -148,6 +182,8 @@ PyCuVSLAM provides Docker support for both x86_64 and Jetson platforms with Real
     ```bash
     pip install -e bin/aarch64
     ```
+    
+    >**Note**: If you are using Pixi, you will need to run `pixi run pip install -e bin/x86_64` to install cuVSLAM.
 3. Install PyCuVSLAM using one of the installation methods mentioned above, and then install the
    required packages for the examples:
     ```bash
