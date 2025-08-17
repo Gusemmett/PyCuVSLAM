@@ -313,7 +313,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rav1e-0.7.1-h8fae777_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/re2-2025.07.22-h5a314c3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.2-h8c095d6_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/rerun-sdk-0.22.1-py310hd05e49f_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/rerun-sdk-0.23.4-py310h2599ed9_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/s2n-1.5.23-h8e187f5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/scipy-1.14.1-py310hfcf56fc_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/sdl2-2.32.54-h3f2d84a_0.conda
@@ -4454,9 +4454,9 @@ packages:
   purls: []
   size: 282480
   timestamp: 1740379431762
-- conda: https://conda.anaconda.org/conda-forge/linux-64/rerun-sdk-0.22.1-py310hd05e49f_0.conda
-  sha256: adc9038a5cc7591e7cac620a489f791958a24232e792f0da80e64e03ae1f5d94
-  md5: 6599181c67761d7b6f1e3d7005caadee
+- conda: https://conda.anaconda.org/conda-forge/linux-64/rerun-sdk-0.23.4-py310h2599ed9_0.conda
+  sha256: 4a4cbe27d80a8b29cfe208b39089eaa087754ed88adbfc98039022de4e0e1a4c
+  md5: 2b01e1504bab9d09f9cf9364e0e6525d
   depends:
   - __glibc >=2.17,<3.0.a0
   - anywidget
@@ -4476,8 +4476,8 @@ packages:
   purls:
   - pkg:pypi/rerun-notebook?source=hash-mapping
   - pkg:pypi/rerun-sdk?source=hash-mapping
-  size: 43632582
-  timestamp: 1740765853182
+  size: 50633669
+  timestamp: 1750970874390
 - conda: https://conda.anaconda.org/conda-forge/linux-64/s2n-1.5.23-h8e187f5_0.conda
   sha256: 016fe83763bc837beb205732411583179e2aac1cdef40225d4ad5eeb1bc7b837
   md5: edd15d7a5914dc1d87617a2b7c582d23

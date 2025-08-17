@@ -43,3 +43,73 @@ You should see the following interactive visualization in rerun:
 > **Note**: The PyCuVSLAM stereo tracker expects reliably synchronized stereo pairs with a stable FPS. If your camera pipeline is doing extensive on-device processing or AI inference, frame rates may drop, and image pairs may become unsynchronized. Watch for warnings about low FPS or mismatched stereo frames
 
 If you experience low FPS even in the basic setup, you can investigate potential bottlenecks using the supplied [measurement tools](https://docs.luxonis.com/software/depthai/optimizing/) for OAK devices 
+
+## Offline Playback (run_offline.py)
+
+Use this when you have a dataset recorded previously (e.g. with `examples/oak-d/simple_recorder.py`) and want to replay it through PyCuVSLAM.
+
+### Expected directory structure
+
+```
+run1/
+  calibration.json           # camera & (optional) IMU calibration
+  imu.csv                    # optional: accelerometer + gyroscope stream
+  left.csv                   # mapping/index for left stream
+  right.csv                  # mapping/index for right stream
+
+  # Image mode (PNG, mono8)
+  left/
+    123456789.png
+  right/
+    123456789.png
+
+  # Video mode (choose one of the following pairs)
+  left.mp4                   # H.265 remuxed in MP4 container
+  right.mp4
+  # or
+  left.h265                  # raw H.265 elementary stream
+  right.h265
+```
+
+### CSV schemas and assumptions
+
+- **left.csv/right.csv (image mode)**: header is `timestamp_ns,filename`
+  - Example row: `1717000000123456,123456789.png`
+- **left.csv/right.csv (video mode)**: header is `ts_ns,frame_idx`
+  - Example row: `1717000000123456,42`
+  - Frames are decoded sequentially and paired by timestamp within a 5 ms tolerance.
+- **imu.csv (optional)**: header is `ts_ns,gyro_x,gyro_y,gyro_z,accel_x,accel_y,accel_z`
+  - Units should be consistent with your calibration (typically rad/s for gyro, m/s^2 for accel).
+
+### calibration.json expectations
+
+- `left` and `right` camera entries must include:
+  - `intrinsics`: 3×3 matrix; `intrinsics[0][0]=fx`, `intrinsics[1][1]=fy`, `intrinsics[0][2]=cx`, `intrinsics[1][2]=cy`
+  - `distortion`: polynomial model coefficients array
+  - `resolution`: `[width, height]`
+  - `extrinsics`: 4×4 transform from camera to rig, in centimetres (converted to metres at runtime)
+- Optional `imu` entry (for `--with-imu`):
+  - `rig_from_imu`: 4×4 transform in centimetres
+  - `gyroscope_noise_density`, `gyroscope_random_walk`
+  - `accelerometer_noise_density`, `accelerometer_random_walk`
+  - `frequency`
+
+### Run the offline playback
+
+- Minimal (stereo-only):
+
+```bash
+pixi run examples/oak-d/run_offline.py --data ~/ds3 --horizontal-stereo-camera --save-rrd out.rrd
+```
+
+- With IMU (stereo-VIO), if `imu.csv` and IMU calibration are present:
+
+```bash
+pixi run examples/oak-d/run_offline.py --data ~/ds3 --with-imu --horizontal-stereo-camera --save-rrd out.rrd
+```
+
+Notes:
+- Use `--horizontal-stereo-camera` when the left/right cameras form a horizontal stereo pair (typical OAK-D setup).
+- For video mode, ensure `left.mp4/right.mp4` (or `left.h265/right.h265`) exist alongside `left.csv/right.csv` with `ts_ns,frame_idx` headers.
+- The first 60 frames are used as warmup and are not processed.
+- Add `--save-rrd <file.rrd>` to save a full Rerun recording for later inspection.

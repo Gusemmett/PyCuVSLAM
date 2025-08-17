@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Offline playback for datasets recorded with simple_recorder.py.
 
 This script replays a previously recorded OAK-D dataset in either stereo
@@ -67,7 +69,7 @@ from visualizer import RerunVisualizer  # pylint: disable=wrong-import-position
 # -----------------------------------------------------------------------------
 WARMUP_FRAMES = 60
 SYNC_THRESHOLD_NS = 5 * 1_000_000   # 5 ms in nanoseconds
-IMAGE_JITTER_THRESHOLD_NS = 35 * 1_000_000  # 35 ms in nanoseconds
+IMAGE_JITTER_THRESHOLD_NS = 45 * 1_000_000  # 35 ms in nanoseconds
 
 # Static border masks – helps tracking on unrectified OAK-D fisheye images
 BORDER_TOP = 50
